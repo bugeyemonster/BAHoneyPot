@@ -2,7 +2,14 @@
 # this code was taken from https://github.com/bjeborn/basic-auth-pot 
 ## converted to python 3
 ## added a redirect if user sends basic auth request
-
+## Todo
+* Add post request to gophish server
+* add options to configure strictly has honeypot or redirect and gophish integration
+* add these features as command line options at server start
+* 1. ip and port
+* 2. redirect url
+* 3. mode honeypot, gophish
+* 4. Help Menu
 
 ## About
 bap is a webservice honeypot that logs HTTP basic authentication credentials in a "parser friendly format"&trade;.
