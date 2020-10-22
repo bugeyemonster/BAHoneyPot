@@ -103,19 +103,29 @@ class BapRequestHandler(http.server.BaseHTTPRequestHandler):
 
     # Handle requests in do_HEAD()
     def do_HEAD(self):
-        # Always send 401 response
-        self.send_response(401)
-        self.send_header('WWW-Authenticate', 'Basic realm="ADMIN"')
-        self.send_header('Content-type', 'text/html')
-        self.end_headers()
-
+        # if there is not a basic auth header send 401 repsonse 
+        authstring = self.headers.get('Authorization', None)
+        if authstring == None:
+            self.send_response(401)
+            self.send_header('WWW-Authenticate', 'Basic realm="Login"')
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            print("401 Auth Request sent")
+        # if there is a basic auth header send a 301 redirect    
         # Decode and log credentials, if any.
-        authstring = self.headers.getheader('Authorization', None)
+        # authstring = self.headers.get('Authorization', None)
         if authstring != None:
+            self.send_response(301)
+            # change location uri to redirect to prefered location
+            self.send_header('Location', "https://wikipedia.org")
+            self.end_headers()
+            print ("redirect sent")
             authparts = authstring.split()
+            print(authparts)
             if len(authparts) == 2 and authparts[0] == 'Basic':
                 try:
                     authdecoded = base64.b64decode(authparts[1])
+                    print(authdecoded)
                 except TypeError as e:
                     self.errorlogger.log(
                         '%s:%s DecodeFailure %s',
@@ -128,6 +138,7 @@ class BapRequestHandler(http.server.BaseHTTPRequestHandler):
                         self.address_string(),
                         self.srcport_string(),
                         authdecoded)
+        
 
     # GET = HEAD
     def do_GET(self):
