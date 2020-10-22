@@ -1,4 +1,5 @@
 # bap - http Basic Authentication honeyPot
+# this code was take from https://github.com/bjeborn/basic-auth-pot and converted to python3
 
 ## About
 bap is a webservice honeypot that logs HTTP basic authentication credentials in a "parser friendly format"&trade;.
